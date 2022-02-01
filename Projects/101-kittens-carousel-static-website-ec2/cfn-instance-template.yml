@@ -15,7 +15,7 @@ Resources:
         - TemelciSecGroup
       Tags:
         - Key: Name 
-          Value: !Sub Web Server of  ${AWS::StackName} Stack
+          Value: !Sub Web Server of  ${AWS::StackName}
       UserData: 
         Fn::Base64:
           !Sub |
