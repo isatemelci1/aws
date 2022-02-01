@@ -14,28 +14,27 @@ Resources:
       SecurityGroups:
         - TemelciSecGroup
       Tags:
-        - Key: Name 
+        - Key: Name
           Value: !Sub Web Server of  ${AWS::StackName}
-      UserData: 
-        Fn::Base64:
-          !Sub |
-            #!/bin/bash
-            yum update -y 
-            yum install httpd -y 
-            FOLDER="https://raw.githubusercontent.com/isatemelci1/aws/main/Projects/101-kittens-carousel-static-website-ec2/static-web"
-            cd /var/www/html
-            wget $FOLDER/index.html
-            wget $FOLDER/cat0.jpg
-            wget $FOLDER/cat1.jpg
-            wget $FOLDER/cat2.jpg
-            wget $FOLDER/cat3.jpg
-            wget $FOLDER/cat4.jpeg
-            wget $FOLDER/cat5.png
-            systemctl start httpd
-            systemctl enable httpd
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y 
+          yum install httpd -y 
+          FOLDER="https://raw.githubusercontent.com/isatemelci1/aws/main/Projects/101-kittens-carousel-static-website-ec2/static-web"
+          cd /var/www/html
+          wget $FOLDER/index.html
+          wget $FOLDER/cat0.jpg
+          wget $FOLDER/cat1.jpg
+          wget $FOLDER/cat2.jpg
+          wget $FOLDER/cat3.jpg
+          wget $FOLDER/cat4.jpeg
+          wget $FOLDER/cat5.png
+          systemctl start httpd
+          systemctl enable httpd
 Outputs:
   WebsiteURL:
-    Value: !Sub 
+    Value: !Sub
       - http://${PublicAddress}
       - PublicAddress: !GetAtt WebServerHostApache.PublicDnsName
     Description: Kittens Carousel Application URL
