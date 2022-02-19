@@ -118,8 +118,7 @@ Resources:
           </html>" > /var/www/html/index.html
           systemctl start httpd
           systemctl enable httpd
-
-
+          
   targetGroupFromTemplate:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
