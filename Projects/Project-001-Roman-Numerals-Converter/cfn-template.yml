@@ -17,7 +17,7 @@ Parameters:
 
   paramMyInsType:
     Description: Select instance type
-    Type: List<AWS::EC2::Instance::Id>
+    Type: String
     Default: t2.micro
     AllowedValues:
       - t2.micro
@@ -26,9 +26,9 @@ Parameters:
 Mappings:
   RegionImageMap:
     us-east-1:
-      AMI: ami-0dc2d3e4c0f9ebd18
+      AMI: ami-033b95fb8079dc481
     us-east-2:
-      AMI: ami-0233c2d874b811deb
+      AMI: ami-0b614a5d911900a9b
     us-west-1:
       AMI: ami-0ed05376b59b90e46
     us-west-2:
@@ -37,7 +37,50 @@ Mappings:
       AMI: ami-058b1b7fe545997ae
 
 Resources:
-  launchTemplateForNum2RomanApp:
+  loadBalancerForNumtoRoman:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      SecurityGroups:
+        - !GetAtt romanProjectSecGroup.GroupId
+      Subnets: !Ref paramSubnet
+      Type: application
+
+  listenerForNumtoRomanProj:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions: # Required
+        - Type: forward
+          TargetGroupArn: !Ref targetGrpForNumtoRomanProject
+      LoadBalancerArn: !Ref loadBalancerForNumtoRoman # Required
+      Port: 80
+      Protocol: HTTP
+
+  autoScalingGrpForNumtoRoman:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones: !GetAZs 
+      DesiredCapacity: 2
+      HealthCheckGracePeriod: 90
+      HealthCheckType: ELB
+      LaunchTemplate:
+        LaunchTemplateId: !Ref launchTemplateForNumtoRomanApp
+        Version: 1
+      MaxSize: "3" # Required
+      MinSize: "1" # Required
+      TargetGroupARNs:
+        - !Ref targetGrpForNumtoRomanProject
+
+  policyCPUforNumtoRoman:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AutoScalingGroupName: !Ref autoScalingGrpForNumtoRoman # Required
+      PolicyType: TargetTrackingScaling
+      TargetTrackingConfiguration:
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ASGAverageCPUUtilization
+        TargetValue: 60.0
+
+  launchTemplateForNumtoRomanApp:
     Type: AWS::EC2::LaunchTemplate
     Properties:
       LaunchTemplateData:
@@ -61,6 +104,17 @@ Resources:
           cd ..
           python3 app.py
 
+  targetGrpForNumtoRomanProject:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 10
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 5
+      Port: 80
+      Protocol: HTTP
+      UnhealthyThresholdCount: 3
+      VpcId: !Ref paramVPC
+
   romanProjectSecGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -77,3 +131,9 @@ Resources:
       VpcId: !Ref paramVPC
 
 Outputs:
+  AppUrl:
+    Description: URL of the ALB
+    Value: !Join 
+       - ''
+       - - 'http://'
+         - !GetAtt loadBalancerForNumtoRoman.DNSName
