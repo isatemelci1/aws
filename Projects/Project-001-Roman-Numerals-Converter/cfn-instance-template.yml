@@ -24,7 +24,7 @@ Resources:
           yum update -y
           pip3 install flask
           mkdir project && cd project
-          wget https://raw.githubusercontent.com/isatemelci1/my-projects/main/aws/projects/Project-001-Roman-Numerals-Converter/app.py
+          wget https://raw.githubusercontent.com/isatemelci1/aws/main/Projects/Project-001-Roman-Numerals-Converter/app.py
           mkdir templates && cd templates
           wget https://raw.githubusercontent.com/isatemelci1/aws/main/Projects/Project-001-Roman-Numerals-Converter/templates/index.html
           wget https://raw.githubusercontent.com/isatemelci1/aws/main/Projects/Project-001-Roman-Numerals-Converter/templates/result.html
