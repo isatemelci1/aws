@@ -25,10 +25,11 @@ Resources:
           yum update -y
           pip3 install flask
           mkdir project && cd project
-          wget https://raw.githubusercontent.com/isatemelci1/aws/main/Projects/Project-001-Roman-Numerals-Converter/app.py
+          FOLDER="https://raw.githubusercontent.com/isatemelci1/aws/main/Projects/Project-001-Roman-Numerals-Converter"
+          wget $FOLDER/app.py
           mkdir templates && cd templates
-          wget https://raw.githubusercontent.com/isatemelci1/aws/main/Projects/Project-001-Roman-Numerals-Converter/templates/index.html
-          wget https://raw.githubusercontent.com/isatemelci1/aws/main/Projects/Project-001-Roman-Numerals-Converter/templates/result.html
+          wget $FOLDER//templates/index.html
+          wget $FOLDER//templates/result.html
           cd ..
           python3 app.py
   
