@@ -6,13 +6,16 @@ Parameters:
   paramKeyName:
     Description: Select your KEY
     Type: AWS::EC2::KeyPair::KeyName
-
+  
+  LatestAmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
   
 Resources:
   instanceForNumtoRoman:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-033b95fb8079dc481
+      ImageId: !Ref LatestAmiId
       InstanceType: t2.micro
       KeyName: !Ref paramKeyName
       SecurityGroupIds:
