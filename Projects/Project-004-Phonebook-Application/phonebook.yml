@@ -209,8 +209,8 @@ Resources:
       DeleteAutomatedBackups: true
       Engine: !Ref paramDBEngine
       EngineVersion: "8.0.19"
-      MasterUserPassword: !Ref paramDBUserName
-      MasterUsername: !Ref paramDBPassword
+      MasterUserPassword: !Ref paramDBPassword
+      MasterUsername: !Ref paramDBUserName
       VPCSecurityGroups:
         - !GetAtt securityGroupRDSInstance.GroupId           
               
