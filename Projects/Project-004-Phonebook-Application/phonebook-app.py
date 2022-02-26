@@ -11,9 +11,9 @@ db_endpoint = open("/home/ec2-user/dbserver.endpoint", 'r', encoding='UTF-8')
 # Configure mysql database
 
 app.config['MYSQL_DATABASE_HOST'] = db_endpoint.readline().strip()
-app.config['MYSQL_DATABASE_USER'] = 'admin'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'Please_Enter_Your_DB_Password'
-app.config['MYSQL_DATABASE_DB'] = 'clarusway_phonebook'
+app.config['MYSQL_DATABASE_USER'] = 'isatemelci'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'Admin90..'
+app.config['MYSQL_DATABASE_DB'] = 'phonebook'
 app.config['MYSQL_DATABASE_PORT'] = 3306
 db_endpoint.close()
 mysql = MySQL()
